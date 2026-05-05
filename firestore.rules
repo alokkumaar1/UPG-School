@@ -1,0 +1,19 @@
+// firestore.rules
+// Copy this content into Firebase Console > Firestore > Rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admissions collection:
+    // Anyone can create (for submission), only authenticated admin can read/update/delete
+    match /admissions/{docId} {
+      // Allow creating new applications (public form submission)
+      allow create: if true;
+
+      // Only allow reads from authenticated users (for admin panel)
+      // Change this to use Firebase Auth for proper protection
+      allow read, update, delete: if request.auth != null;
+    }
+  }
+}
